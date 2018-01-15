@@ -6,9 +6,12 @@
 <body>
 
 	<script>
-		styles = ['Jazz', 'Blues'];
-		styles.push ('Rock and Roll');
-		styles[1] = 'Classics';
+
+		let styles = ['Jazz', 'Blues'];
+		styles.push('Rock and Roll');
+		if (arr.length % 2 === 1){
+			styles[(arr.length - 1)/2] = 'Classics'; 
+		}
 		console.log(styles.shift());
 		styles.unshift('Rap', 'Reggae');
 
@@ -118,9 +121,11 @@
 	}
 
 	function union(){
-		for (let a of arguments){
-			deleteEqualItemsPerArray(a);
-			deleteEqualItemsBetweenTwoArrays(a);
+		for (let i = 0; i < arguments.length; i++){
+			deleteEqualItemsPerArray(arguments[i]);
+			if(!(i === 0)){
+				deleteEqualItemsBetweenTwoArrays(arguments[i-1], arguments[i]);
+			}
 		}
 		return concat(arguments);
 
