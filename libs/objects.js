@@ -108,6 +108,12 @@ let ladder = {
 //Ex 3
 
 const isNum = v => typeof v === 'number';
+const isLeapYear = (year) => (((year % 100) !=0 ) &&((year % 4) == 0))||((year % 400) == 0);
+
+const secondsPerDay = 60 * 60 * 24;
+const secondsPerYear = 365 * secondsPerDay;
+const secondsPerLeapYear = 366 * secondsPerDay;
+
 
 function mkDate(day, month, year) {
 	if (day === null 	|| month === null 	|| year === null ) {
@@ -147,7 +153,7 @@ function mkDate(day, month, year) {
 			return obj.isOlder(this);
 		},
 		isLeapYear() {
-			return (((this.year % 100) !=0 ) &&((this.year % 4) == 0))||((this.year % 400) == 0);
+			return isLeapYear(this.year);
 		},
 		setLocale(timezone) {
 			//Possible Timezones
@@ -290,7 +296,6 @@ function mkDateTime(day, month, year, hour = 00, min = 00, sec = 00) {
 
 		},
 		
-
 		getEpoch() {
 			let secondsYears = this.secondsUpToTheYear();
 			let secondsMonth = this.secondsOfMonthsInTheSameYear();
@@ -303,42 +308,30 @@ function mkDateTime(day, month, year, hour = 00, min = 00, sec = 00) {
 			for (let i = 1; i < this.date.month; i++){
 				result += this.date.getMonthDays(i);
 			}
-			result *= infoDate.secondsPerDay;
+			result *= secondsPerDay;
 			return result;
 		},
 
 		secondsInTheSameMonth () {
-			let days = this.date.day * infoDate.secondsPerDay;
+			let days = (this.date.day - 1) * secondsPerDay;
 			let hours = this.hour * 60 * 60;
 			let min = this.min * 60;
 			return days + hours + min + this.sec;
 		},
 
 		secondsUpToTheYear() {
-			let firstTwoYears = infoDate.seconds1970And1971();
-			let years = (this.date.year - 1972);
-			
-			if (years <= 0){
-				if (this.mkDate.year === 1970) {
-					return 0;
-				}
-				else if(this.date.year === 1971){
-					return infoDate.secondsPerYear();
-				}
-				else {
-					return firstTwoYears;
-				}
-			}	
+      let secondsYears = 0;
+      for (let year = 1970; year < this.date.year; year++) {
+        secondsYears += isLeapYear(year) ? secondsPerLeapYear : secondsPerYear;
+      }
 
-
-			if (years % 4 === 0){
-				return (years/4) * infoDate.secondsEveryFourYears() + firstTwoYears;
-			}
-			let quotient = Math.floor(years/4);
-			let residue = years%4;
-			return 	quotient * infoDate.secondsEveryFourYears() + firstTwoYears +
-					infoDate.secondsPerYear() * residue;
+      return secondsYears;
 		},
+    
+
+
+
+    
 
 						//It supports up to eight parameters, works with at least two.
 		//Works only with Or Operator
@@ -356,21 +349,7 @@ function mkDateTime(day, month, year, hour = 00, min = 00, sec = 00) {
 	}
 }
 
-const infoDate = {
-	secondsPerDay: 60 * 60 * 24,
-	secondsPerYear () {
-		return 365 * this.secondsPerDay;
-	},
-	secondsPerLeapYear() {
-		return 366 * this.secondsPerDay;
-	},
-	secondsEveryFourYears() {
-		return (this.secondsPerYear() * 3 + this.secondsPerLeapYear());
-	}, 
-	seconds1970And1971() {
-		return this.secondsPerYear() * 2;
-	},
-};
+
 
 const juani = mkDateTime(27,08,1991, 23, 11, 25);
 const felu = mkDateTime(23,04,1999, 8, 43, 28);
