@@ -25,21 +25,21 @@ function isObjectEmpty(object){
 
 //Ex 4
 
-let salaries = {
-  John: 100,
-  Ann: 160,
-  Pete: 130
-}
+// let salaries = {
+//   John: 100,
+//   Ann: 160,
+//   Pete: 130
+// }
 
-function sumSalaries(object){
-	let sum = 0;
-	for(let key in object){
-		if ((typeof object[key]) === 'number'){
-			sum += object[key];
-		}
-	}
-	return sum;
-}
+// function sumSalaries(object){
+// 	let sum = 0;
+// 	for(let key in object){
+// 		if ((typeof object[key]) === 'number'){
+// 			sum += object[key];
+// 		}
+// 	}
+// 	return sum;
+// }
 
 
 //Ex 5
@@ -115,246 +115,215 @@ const secondsPerYear = 365 * secondsPerDay;
 const secondsPerLeapYear = 366 * secondsPerDay;
 
 
-function mkDate(day, month, year) {
-	if (day === null 	|| month === null 	|| year === null ) {
-		console.log('fecha invalida');
-	}
+function MyDate(day, month, year) {
+	if(day === null || month === undefined || year === undefined){
+    console.log('Fecha Invalida');
+  }
 
-	return {
-		day,
-		month,
-		year,
-		print() {
-			if (!this.isValid()) {
-				return 'Fecha inválida';
-			}
-
-			return this.timezone === 'en-US' 
-				? `${this.month}/${this.day}/${this.year}`
-				: `${this.day}/${this.month}/${this.year}`
-		},
-		isOlder (obj) {
-			if(this.year > obj.year) {
+	this.day = day;
+	this.month = month;
+	this.year = year;
+	this.print = function() {
+		if (!this.isValid()) {
+			return 'Fecha inválida';
+		}
+		return this.timezone === 'en-US' 
+			? `${this.month}/${this.day}/${this.year}`
+			: `${this.day}/${this.month}/${this.year}`
+	};
+	this.isBefore = function(obj) {
+		if(this.year > obj.year) {
+			return false;
+		} 
+		else if(this.year === obj.year){
+			if(this.month > obj.month){
 				return false;
 			} 
-			else if(this.year === obj.year){
-				if(this.month > obj.month){
+			else if(this.month === obj.month){
+				if(this.day >= obj.day){
 					return false;
-				} 
-				else if(this.month === obj.month){
-					if(this.day >= obj.day){
-						return false;
-					}
 				}
 			}
-			return true;
-		},
-		isYounger (obj) {
-			return obj.isOlder(this);
-		},
-		isLeapYear() {
-			return isLeapYear(this.year);
-		},
-		setLocale(timezone) {
-			//Possible Timezones
-			// 'es-AR' ----- dd/mm/yyyy
-			// 'en-US' ----- mm/dd/yyyy
-			if(timezone === 'es-AR' || timezone === 'en-US'){
-				this.timezone = timezone;
-				return timezone;
-			} else {
-				return 'Invalid Time Zone';
-			}
-		},
-		getLocale() {
-			return this.timezone || 'es-AR';
-		},
-		getMonthDays(month) {
-			let result;
-			switch(month) {
-				case 1:
-				case 3:
-				case 5:
-				case 7: 
-				case 8:
-				case 10:
-				case 12:
-					result = 31;
-					break;
-				case 4:
-				case 6:
-				case 9:
-				case 11:
-					result = 30;
-					break;
-				case 2:
-					result = this.isLeapYear() ? 29 : 28;
-					break;  
-			}
-			return result;
-		},
-		isValid() {
-			//Type of data validation
-			if(this.isNotANumber(this)){
-				return false
-			}
+		}
+		return true;
+	};
+	this.isAfter = function(obj) {
+		return obj.isBefore(this);
+	};
+	this.isLeapYear = function() {
+		return isLeapYear(this.year);
+	};
+	this.setLocale = function(timezone) {
+		//Possible Timezones
+		// 'es-AR' ----- dd/mm/yyyy
+		// 'en-US' ----- mm/dd/yyyy
+		if(timezone === 'es-AR' || timezone === 'en-US'){
+			this.timezone = timezone;
+			return timezone;
+		} else {
+			return 'Invalid Time Zone';
+		}
+	};
+	this.getLocale = function() {
+		return this.timezone || 'es-AR';
+	};
+	this.getMonthDays = function(month) {
+		let result;
+		switch(month) {
+			case 1:
+			case 3:
+			case 5:
+			case 7: 
+			case 8:
+			case 10:
+			case 12:
+				result = 31;
+				break;
+			case 4:
+			case 6:
+			case 9:
+			case 11:
+				result = 30;
+				break;
+			case 2:
+				result = this.isLeapYear() ? 29 : 28;
+				break;  
+		}
+		return result;
+	};
+	this.isValid = function() {
+		//Type of data validation
+		if(this.isNotANumber(this)){
+			return false
+		}
 
-			//Leap-year
-			if(!this.isLeapYear() && this.month === 2 && this.day === 29 ){
-				return false;
-			}
-
-			if (this.year < 1970 || this.year > 3000) {
-				return false;
-			}
-
-			if (this.month < 1 && this.month > 12) {
-				return false;
-			}
-
-			if (this.day < 1 || this.day > this.getMonthDays(this.month)) {
-				return false;
-			}
-
-			return true;
-		},
-		isNotANumber(obj) {
-			if(	!isNum(this.day) 	|| !isNum(this.month) 	|| !isNum(this.year) ){
-				return true;
-			}
+		//Leap-year
+		if(!this.isLeapYear() && this.month === 2 && this.day === 29 ){
 			return false;
-		},
+		}
+
+		if (this.year < 1970 || this.year > 3000) {
+			return false;
+		}
+
+		if (this.month < 1 && this.month > 12) {
+			return false;
+		}
+
+		if (this.day < 1 || this.day > this.getMonthDays(this.month)) {
+			return false;
+		}
+
+		return true;
+	};
+	this.isNotANumber = function(obj) {
+		if(	!isNum(this.day) 	|| !isNum(this.month) 	|| !isNum(this.year) ){
+			return true;
+		}
+		return false;
 	};
 }
 
-function mkDateTime(day, month, year, hour = 00, min = 00, sec = 00) {
-	if (hour === null 	|| min === null 	|| sec === null){
-		console.log('Fecha inválida');
-	}
+function MyDateTime(day, month, year, hour = 00, min = 00, sec = 00) {
+	this.hour = hour;
+	this.min = min;
+	this.sec = sec;
+	this.date = new MyDate(day, month, year);
+	this.print = function() {
+		if (!this.isValid()) {
+			return 'Fecha inválida';
+		}
+		return `${this.date.print()} ${this.mkMilitar()}`;
+	};
 
-	return {
-		hour,
-		min,
-		sec,
-		date: mkDate(day, month, year),
-		print () {
-			if (!this.isValid()) {
-				return 'Fecha inválida';
-			}
+	this.setLocale = function(locale) {
+		this.date.setLocale(locale);
+	};
 
-			return`${this.date.print()} ${this.mkMilitar()}`;
-		},
+	this.getLocale = function() {
+		return this.date.getLocale();
+	};
 
-		setLocale(locale) {
-			this.date.setLocale(locale);
-		},
+	this.mkMilitar = function(){
+		return `${this.asMilitar(this.hour)}:${this.asMilitar(this.min)}:${this.asMilitar(this.sec)}`;
+	};
 
-		getLocale() {
-			return this.date.getLocale();
-		},
+	this.asMilitar = function(num){
+		return num < 10 ? `0${num}` : num;
+	};
 
-		mkMilitar(){
-			return `${this.asMilitar(this.hour)}:${this.asMilitar(this.min)}:${this.asMilitar(this.sec)}`;
-		},
+	this.isNotANumber = function(obj) {
+		if(	!isNum(this.hour) 	|| !isNum(this.min)		|| !isNum(this.sec) ){
+			return true;
+		}
+		return false;
+	};
 
-		asMilitar(num){
-			return num < 10 ? `0${num}` : num;
-		},
+	this.isValid = function() {
 
-
-		isNotANumber(obj) {
-			if(	!isNum(this.hour) 	|| !isNum(this.min)		|| !isNum(this.sec) ){
-				return true;
-			}
+		if (!this.date.isValid()) {
 			return false;
-		},
+		}
 
-		isValid () {
+		//Type of data validation
+		if(this.isNotANumber(this)){
+			return false
+		}
 
-			if (!this.date.isValid()) {
-				return false;
-			}
+		if (this.hour < 0 && this.hour > 23) {
+			return false;
+		}
 
-			//Type of data validation
-			if(this.isNotANumber(this)){
-				return false
-			}
+		if (this.min < 0 && this.min > 59) {
+			return false;
+		}
 
-			if (this.hour < 0 && this.hour > 23) {
-				return false;
-			}
-
-			if (this.min < 0 && this.min > 59) {
-				return false;
-			}
-
-			if (this.sec < 0 && this.sec > 59) {
-				return false;
-			}
-			
-			return true;
-
-		},
+		if (this.sec < 0 && this.sec > 59) {
+			return false;
+		}
 		
-		getEpoch() {
-			let secondsYears = this.secondsUpToTheYear();
-			let secondsMonth = this.secondsOfMonthsInTheSameYear();
-			let restOfSeconds = this.secondsInTheSameMonth();
-			return secondsYears + secondsMonth + restOfSeconds;
-		},
+		return true;
 
-		secondsOfMonthsInTheSameYear() {
-			let result = 0;
-			for (let i = 1; i < this.date.month; i++){
-				result += this.date.getMonthDays(i);
-			}
-			result *= secondsPerDay;
-			return result;
-		},
+	};
+	
+	this.getEpoch = function() {
+		let secondsYears = this.secondsUpToTheYear();
+		let secondsMonth = this.secondsOfMonthsInTheSameYear();
+		let restOfSeconds = this.secondsInTheSameMonth();
+		return secondsYears + secondsMonth + restOfSeconds;
+	};
 
-		secondsInTheSameMonth () {
-			let days = (this.date.day - 1) * secondsPerDay;
-			let hours = this.hour * 60 * 60;
-			let min = this.min * 60;
-			return days + hours + min + this.sec;
-		},
+	this.secondsOfMonthsInTheSameYear = function() {
+		let result = 0;
+		for (let i = 1; i < this.date.month; i++){
+			result += this.date.getMonthDays(i);
+		}
+		result *= secondsPerDay;
+		return result;
+	};
 
-		secondsUpToTheYear() {
-      let secondsYears = 0;
-      for (let year = 1970; year < this.date.year; year++) {
-        secondsYears += isLeapYear(year) ? secondsPerLeapYear : secondsPerYear;
-      }
+	this.secondsInTheSameMonth = function() {
+		let days = (this.date.day - 1) * secondsPerDay;
+		let hours = this.hour * 60 * 60;
+		let min = this.min * 60;
+		return days + hours + min + this.sec;
+	};
 
-      return secondsYears;
-		},
-    
-
-
-
-    
-
-						//It supports up to eight parameters, works with at least two.
-		//Works only with Or Operator
-		/*
-		anyParameter(validation, a, b, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0){
-			arr = [a, b, c, d, e, f, g, h];
-			for(let key of arr){
-				if (key === validation){
-					return false;
-				}
-			}
-			return true;
-		},
-		*/
-	}
+	this.secondsUpToTheYear = function() {
+    let secondsYears = 0;
+    for (let year = 1970; year < this.date.year; year++) {
+      secondsYears += isLeapYear(year) ? secondsPerLeapYear : secondsPerYear;
+    }
+    return secondsYears;
+	};
 }
 
 
 
-const juani = mkDateTime(27,08,1991, 23, 11, 25);
-const felu = mkDateTime(23,04,1999, 8, 43, 28);
-const prueba = mkDateTime(02, 02, 2000, 88, 7, 25);
-const pancho = mkDateTime(06,12,1995, 9, 8, 21);
-const pedro = mkDateTime(15,02,1993, 7, 42, 32);
-const andru = mkDateTime(07,10,2005, 18, 58, 23);
-const leap = mkDateTime(07,10,2004, 18, 58, 23);
+// const juani = new MyDateTime(27,08,1991, 23, 11, 25);
+// const felu = new MyDateTime(23,04,1999, 8, 43, 28);
+// const prueba = new MyDateTime(02, 02, 2000, 88, 7, 25);
+// const pancho = new MyDateTime(06,12,1995, 9, 8, 21);
+// const pedro = new MyDateTime(15,02,1993, 7, 42, 32);
+// const andru = new MyDateTime(07,10,2005, 18, 58, 23);
+// const leap = new MyDateTime(07,10,2004, 18, 58, 23);

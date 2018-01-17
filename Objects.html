@@ -5,5 +5,64 @@
 </head>
 <body>
 	<script src="./libs/objects.js"></script>
+	<script >
+		function sumSalaries(salaries){
+			let a = Object.values(salaries);
+			let result = 0;
+			for (let b of a){
+				if(typeof b !== 'number'){
+					return 'Invalid array. One element is not a number';
+				}
+				result += b;
+			}
+			return result;
+		}
+
+		function count(obj){
+			let a = Object.keys(obj);
+			return a.length;
+		}
+
+		let test = {
+		  name: "John Smith",
+		  age: 35,
+		  sayHi() {
+		  	return 'hi!';
+		  }
+		};
+
+		let student = {
+		  name: 'John',
+		  age: 30,
+		  isAdmin: false,
+		  courses: ['html', 'css', 'js'],
+		  wife: null
+		};
+
+		let json = JSON.stringify(test);
+		let json2 = JSON.parse(json);
+
+		let room = {
+		  number: 23
+		};
+
+		let meetup = {
+		  title: "Conference",
+		  occupiedBy: [{name: "John"}, {name: "Alice"}],
+		  place: room
+		};
+
+		// circular references
+		room.occupiedBy = meetup;
+		meetup.self = meetup;
+
+		let a = JSON.stringify(meetup, function replacer(key, value) {
+		 	return (key === 'occupiedBy' || key === 'self') ? undefined : value;
+		}, 2);
+		let b = JSON.stringify(room, function replacer(key, value){
+			return (key === 'occupiedBy') ? undefined : value;
+		}, 2)
+
+	</script>
 </body>
 </html>

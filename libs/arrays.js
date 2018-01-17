@@ -7,24 +7,17 @@ if (styles.length % 2 === 1){
 console.log(styles.shift());
 styles.unshift('Rap', 'Reggae');
 
-function askNum(){
-	let answer = prompt('Digit a Number', 5);
-	return answer;
-}
+const askNum = () => prompt('Digit a Number', 5);
+const shouldContinue = (str) => str !== null && isFinite(parseInt(str));
 
 function sumInput(){
-	let wrongInput = 'There is at least an input that is NaN';
-	let arr = [];
-	let a = 0;
-	while(!(a === null || a === '' || isNaN(a))) {
-		arr.push(+a);
-		a = askNum();
-	}
+	let a;
 	let sum = 0;
-	for(let value of arr){
-		sum += value;
-	}
 
+	while(shouldContinue(a = askNum())) {
+		sum += a;
+	}
+	
 	return sum;
 }
 
@@ -38,94 +31,148 @@ function sumArray(arr) {
 }
 
 function getMaxSubSum(arr) {
-	let arrComparison = [];
-	let a = 0;
-	let b = 0;
-	for(i = 0; i < arr.length; i++) {
-	let	j = i;
-		while(j < arr.length) {
-			arrComparison.push(arr[j]);
-			a = sumArray(arrComparison);
-			(a >= b) ? b = a : b = b;
-			j++;
+	let maxSubSum = 0;
+	for(let i = 0; i < arr.length; i++) {
+		let sumFixedStart = 0;
+		for(let j = i; j < arr.length; j++) {
+			sumFixedStart += arr[j];
+			if (sumFixedStart >= maxSubSum) {
+				maxSubSum = currSum;
+			}
 		}
-	arrComparison = [];
 	}
-return b;
+	return maxSubSum;
 }
 
-function concat(array1, array2) {
+//EJERCITACIÓN SANTI
+function concat() {
 	let arrResult = [];
-	function pushear(array) {
-		for (let value of array) {
-			arrResult.push(value);
+
+	for(let arr of arguments){
+		for (let elem of arr) {
+			arrResult.push(elem);
 		}
-		return arrResult;
 	}
-	pushear(array1);
-	pushear(array2);
 	return arrResult;
 }
 
-function deleteEqualItemsPerArray(array1) {
-	for (let i = 0; i < array1.length; i++){
-		secondLoop: for (let j = 0; j < array1.length; j++) {
-			if(i === j){
-				continue secondLoop;
-			}
-			if (array1[i] === array1[j]) {
-				array1.splice(j, 1);
-			}
+
+
+function deleteDuplicates(array) {
+	const result = [];
+
+	for (let elem of array) {
+		if (indexOf(result, elem) === -1) {
+			result.push(elem);
 		}
 	}
+
+	return result;
 }
 
-function deleteEqualItemsBetweenTwoArrays(array1, array2) {
-	for (let value of array1) {
-		for (let i = 0; i < array2.length; i++) {
-			if (value === array2[i]) {
-				array2.splice(i, 1);
-			}
-		}
-	}
-}
-
-function checkIfIsInTheArray(array1, v1){
-	let result;
-	for (let value of array1) {
-		if (v1 === value) {
-			return true;
-		}
-	}
-	
-}
-
-function intersection(array1, array2){
+function intersectionBetweenTwoArr(array1, array2){
 	let arrResult = [];
-	for (let value of array1){
-		for (let i = 0; i < array2.length; i++) {
-			if (value === array2[i]){
-				if (!checkIfIsInTheArray(arrResult, value)){
-					arrResult.push(value);	
-				}
-			} 
+
+	for(let a of array1){
+		for (let b of array2){
+			if(a === b) {
+				arrResult.push(a);
+			}
 		}
 	}
-	return arrResult;  
+	return deleteDuplicates(arrResult);
 }
 
-function union(){
-	for (let i = 0; i < arguments.length; i++){
-		deleteEqualItemsPerArray(arguments[i]);
-		if(!(i === 0)){
-			deleteEqualItemsBetweenTwoArrays(arguments[i-1], arguments[i]);
+function intersection(){
+ 	let arrResult = arguments[0];
+	for(let currArr of arguments){
+		arrResult = intersectionBetweenTwoArr(arrResult, currArr);
+	}
+	return arrResult;
+}
+
+function union() {
+	let arrResult = [];
+
+	for (let currArr of arguments) {
+		arrResult = concat(arrResult, currArr);
+	}
+
+	return deleteDuplicates(arrResult);
+}
+
+function indexOf(arr, elem) {
+	for(let i = 0; i < arr.length; i++){
+		if(elem === arr[i]) {
+			return i;
 		}
 	}
-	return concat(arguments);
-
+	return -1;
 }
 
-function printArguments() {
-	 	console.log(arguments[i]); 
-	
+function filter(arr, fn){
+	let arrResult = [];
+
+	if (typeof fn !== 'function') {
+		return [];
+	}
+
+	for(let a of arr){
+		if(fn(a)){
+			arrResult.push(a);
+		}
+	}
+
+	return arrResult;
 }
+
+const myUsers = [
+	{name: 'pancho', age: 22, isAdmin: true},
+	{name: 'sant i', age: 32, isAdmin: false},
+];
+
+const adminUsers = filter(myUsers, u => u.isAdmin);
+
+function matrixSum(arr){
+	result = 0;
+	for(let a of arr){
+		for(let b of a){
+			result += b;
+		}
+	}
+	return result;
+}
+
+function squareMatrix(arr){
+	for(let a of arr){
+		if(arr.length !== a.length){
+			return false;
+		}
+	}
+	return true;
+}
+
+function diagonalMatrix(arr){
+	sumResult = 0;
+	if(!squareMatrix(arr)){
+		return -1;
+	}
+	for(let i = 0; i < arr.length; i++) {
+		sumResult += arr[i][i];
+	}
+	return sumResult;
+}
+
+function map(arr, fn){
+	let arrResult = [];
+
+	if (typeof fn !== 'function') {
+		return [];
+	}
+
+	for(let a of arr){
+		arrResult.push(fn(a));
+	}
+	return arrResult;
+}
+
