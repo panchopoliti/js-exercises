@@ -1,111 +1,3 @@
-//Ex 1
-let user = {};
-user.name = 'John';
-user.surname = 'Smith';
-user.name = 'Pete';
-delete user.name;
-
-//Ex 2
-let myObject = {};
-let yourObject = {
-	name: 'Pedro',
-	surname: 'Politi',
-};
-let years = 'age';
-yourObject[years] = 24;
-
-
-function isObjectEmpty(object){
-	let i = 0;
-	for(let key in object){
-		i++;
-	}
-	return (i===0);
-}
-
-//Ex 4
-
-// let salaries = {
-//   John: 100,
-//   Ann: 160,
-//   Pete: 130
-// }
-
-// function sumSalaries(object){
-// 	let sum = 0;
-// 	for(let key in object){
-// 		if ((typeof object[key]) === 'number'){
-// 			sum += object[key];
-// 		}
-// 	}
-// 	return sum;
-// }
-
-
-//Ex 5
-
-let menu = {
-  width: 200,
-  height: 300,
-  title: "My menu",
-};
-
-function multiplyNumeric(object) {
-	for(let key in object){
-		if ((typeof object[key]) === 'number'){
-			 object[key] *= 2;
-		}
-	}
-	return;
-}
-
-let myBag = {};
-function addFruitToBag (fruit, amount, bag) {
-	bag[fruit] = (bag[fruit] || 0) + amount;
-}
-
-//Object Methods, This
-//Ex 1
-
-/*
-let calculator = {
-	read () {
-		this.num1 = +prompt('Digit a number:', 3);
-		this.num2 = +prompt('Digit a number:', 3);
-	},
-	sum () {
-		return (this.num1 + this.num2);
-	},
-
-	mul () {
-	 	return (this.num1 * this.num2);
-	}
-};
-
-
-calculator.read();
-console.log('La suma es ' + calculator.sum() );
-console.log('La multiplicación es ' + calculator.mul() );
-*/
-//Ex 2
-let ladder = {
-	step: 0,
-	up() {
-		this.step++;
-		return this;
-	},
-		down() {
-			this.step--;
-			return this;
-		},
-		showStep: function() { // shows the current step
-  		console.log( this.step );
-  		return this;
-		}
-};
-
-
-//Ex 3
 
 const isNum = v => typeof v === 'number';
 const isLeapYear = (year) => (((year % 100) !=0 ) &&((year % 4) == 0))||((year % 400) == 0);
@@ -113,7 +5,6 @@ const isLeapYear = (year) => (((year % 100) !=0 ) &&((year % 4) == 0))||((year %
 const secondsPerDay = 60 * 60 * 24;
 const secondsPerYear = 365 * secondsPerDay;
 const secondsPerLeapYear = 366 * secondsPerDay;
-
 
 function MyDate(day, month, year) {
 	if(day === null || month === undefined || year === undefined){
@@ -123,14 +14,15 @@ function MyDate(day, month, year) {
 	this.day = day;
 	this.month = month;
 	this.year = year;
-	this.print = function() {
-		if (!this.isValid()) {
+	this.toString = function() {
+    if (!this.isValid()) {
 			return 'Fecha inválida';
 		}
-		return this.timezone === 'en-US' 
+		return this.timezone === 'en-US'
 			? `${this.month}/${this.day}/${this.year}`
 			: `${this.day}/${this.month}/${this.year}`
 	};
+
 	this.isBefore = function(obj) {
 		if(this.year > obj.year) {
 			return false;
@@ -147,12 +39,15 @@ function MyDate(day, month, year) {
 		}
 		return true;
 	};
+
 	this.isAfter = function(obj) {
 		return obj.isBefore(this);
 	};
+
 	this.isLeapYear = function() {
 		return isLeapYear(this.year);
 	};
+
 	this.setLocale = function(timezone) {
 		//Possible Timezones
 		// 'es-AR' ----- dd/mm/yyyy
@@ -164,9 +59,11 @@ function MyDate(day, month, year) {
 			return 'Invalid Time Zone';
 		}
 	};
+
 	this.getLocale = function() {
 		return this.timezone || 'es-AR';
 	};
+
 	this.getMonthDays = function(month) {
 		let result;
 		switch(month) {
@@ -191,6 +88,7 @@ function MyDate(day, month, year) {
 		}
 		return result;
 	};
+
 	this.isValid = function() {
 		//Type of data validation
 		if(this.isNotANumber(this)){
@@ -224,16 +122,17 @@ function MyDate(day, month, year) {
 	};
 }
 
-function MyDateTime(day, month, year, hour = 00, min = 00, sec = 00) {
+function MyDateTime(day, month, year, hour = 0, min = 0, sec = 0) {
 	this.hour = hour;
 	this.min = min;
 	this.sec = sec;
 	this.date = new MyDate(day, month, year);
-	this.print = function() {
+
+	this.toString = function() {
 		if (!this.isValid()) {
 			return 'Fecha inválida';
 		}
-		return `${this.date.print()} ${this.mkMilitar()}`;
+		return `${this.date.toString()} ${this.mkMilitar()}`;
 	};
 
 	this.setLocale = function(locale) {
@@ -316,6 +215,33 @@ function MyDateTime(day, month, year, hour = 00, min = 00, sec = 00) {
     }
     return secondsYears;
 	};
+
+/*
+Unit Posibilities: second/s, minute/s, hour/s and day/s.
+*/
+
+  this.diff = function(unit, obj){
+    diff = this.getEpoch() - obj.getEpoch();
+    switch (unit){
+      case 'second':
+      case 'seconds':
+        return diff;
+        break;
+      case 'minute':
+      case 'minutes':
+        return diff/60;
+        break;
+      case 'hour':
+      case 'hours':
+        return diff/3600;
+        break;
+      case 'day':
+      case 'days':
+        return diff/secondsPerDay;
+      default:
+        return 'Invalid input';
+    }
+  };
 }
 
 

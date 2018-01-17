@@ -1,50 +1,8 @@
-
-let styles = ['Jazz', 'Blues'];
-styles.push('Rock and Roll');
-if (styles.length % 2 === 1){
-	styles[(styles.length - 1)/2] = 'Classics'; 
-}
-console.log(styles.shift());
-styles.unshift('Rap', 'Reggae');
-
-const askNum = () => prompt('Digit a Number', 5);
-const shouldContinue = (str) => str !== null && isFinite(parseInt(str));
-
-function sumInput(){
-	let a;
-	let sum = 0;
-
-	while(shouldContinue(a = askNum())) {
-		sum += a;
-	}
-	
-	return sum;
-}
-
-//Considering that every input is a number type
-function sumArray(arr) {
-	let sum = 0;
-	for(let value of arr) {
-		sum += value;
-	}
-	return sum;
-}
-
-function getMaxSubSum(arr) {
-	let maxSubSum = 0;
-	for(let i = 0; i < arr.length; i++) {
-		let sumFixedStart = 0;
-		for(let j = i; j < arr.length; j++) {
-			sumFixedStart += arr[j];
-			if (sumFixedStart >= maxSubSum) {
-				maxSubSum = currSum;
-			}
-		}
-	}
-	return maxSubSum;
-}
-
-//EJERCITACIÓN SANTI
+/**
+* Concatenates arrays
+* @param {Arrays} arrays - the arrays to be concatenated
+* @return {Array} the resulting array of doing the concatenation
+*/
 function concat() {
 	let arrResult = [];
 
@@ -57,7 +15,11 @@ function concat() {
 }
 
 
-
+/**
+* Delete duplicate elements from an array
+* @param {Array} array - the array to remove duplicates 
+* @return {Array} a new array containing unique elements
+*/
 function deleteDuplicates(array) {
 	const result = [];
 
@@ -126,16 +88,9 @@ function filter(arr, fn){
 	return arrResult;
 }
 
-const myUsers = [
-	{name: 'pancho', age: 22, isAdmin: true},
-	{name: 'sant i', age: 32, isAdmin: false},
-];
-
-const adminUsers = filter(myUsers, u => u.isAdmin);
-
 function matrixSum(arr){
-	result = 0;
-	for(let a of arr){
+	let result = 0;
+	for(let a of arr) {
 		for(let b of a){
 			result += b;
 		}
@@ -153,7 +108,7 @@ function squareMatrix(arr){
 }
 
 function diagonalMatrix(arr){
-	sumResult = 0;
+	let sumResult = 0;
 	if(!squareMatrix(arr)){
 		return -1;
 	}
@@ -167,7 +122,7 @@ function map(arr, fn){
 	let arrResult = [];
 
 	if (typeof fn !== 'function') {
-		return [];
+		return arr;
 	}
 
 	for(let a of arr){
