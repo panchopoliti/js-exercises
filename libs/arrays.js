@@ -72,6 +72,10 @@ function indexOf(arr, elem) {
 	return -1;
 }
 
+function contains(arr, elem) {
+	return (indexOf(arr, elem) >= 0);
+}
+
 function filter(arr, fn){
 	let arrResult = [];
 

@@ -86,15 +86,15 @@
 				return false;
 			}
 
-			if (this.year < 1970 || this.year > 3000) {
+			if (this.year < 1970 || this.year > 3000 || isNaN(this.year)) {
 				return false;
 			}
 
-			if (this.month < 1 && this.month > 12) {
+			if (this.month < 1 && this.month > 12 || isNaN(this.month)) {
 				return false;
 			}
 
-			if (this.day < 1 || this.day > DateUtils.getMonthDays(this.month, this.year)) {
+			if (this.day < 1 || this.day > DateUtils.getMonthDays(this.month, this.year) || isNaN(this.day)) {
 				return false;
 			}
 

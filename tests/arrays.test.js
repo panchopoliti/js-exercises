@@ -96,3 +96,15 @@ describe("tail", function() {
 		assert(equalArrays(tail(myArr), [2,3,4]), 'elements are not equal');
 	});
 });
+
+describe("contains", function() {
+	it("should return a boolean whether an array contains the element or not", function() {
+		const myArr = ['santi', 'andy', 'pancho', 'gonza'];
+		assert(contains(myArr, 'santi') === true, "santi is not in the array");
+	});
+
+	it("should return a boolean whether an array contains the element or not", function() {
+		const myArr = ['SaNtI', 'andy', 'pancho', 'onza'];
+		assert(contains(myArr, 'santi') === false, "santi is in the array");
+	});
+});

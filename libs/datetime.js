@@ -33,14 +33,6 @@
 		return myDays + myHours + myMins + sec;
 	}
 
-	function secondsUpToTheYear(year) {
-	    let secondsYears = 0;
-	    for (let y = 1970; y < year; y++) {
-	     	secondsYears += (DateUtils.isLeapYear(y)) ? secondsPerLeapYear : secondsPerYear;
-	    }
-	    return secondsYears;
-	}
-
 	function mkMilitar(hour, min, sec) {
 		return `${asMilitar(hour)}:${asMilitar(min)}:${asMilitar(sec)}`;
 	}
@@ -122,15 +114,15 @@
 				return false
 			}
 
-			if (this.hour < 0 && this.hour > 23) {
+			if (this.hour < 0 && this.hour > 23 || isNaN(this.hour)) {
 				return false;
 			}
 
-			if (this.min < 0 && this.min > 59) {
+			if (this.min < 0 && this.min > 59 || isNaN(this.min)) {
 				return false;
 			}
 
-			if (this.sec < 0 && this.sec > 59) {
+			if (this.sec < 0 && this.sec > 59 || isNaN(this.sec)) {
 				return false;
 			}
 			
@@ -139,7 +131,7 @@
 		};
 		
 		this.getEpoch = function() {
-			let secondsYears = secondsUpToTheYear(this.getYear());
+			let secondsYears = DateUtils.secondsUpToTheYear(this.getYear());
 			let secondsMonth = secondsOfMonthsInTheSameYear(this.getMonth(), this.getYear());
 			let restOfSeconds = secondsInTheSameMonth(this.date.day, this.hour, this.min, this.sec);
 			return secondsYears + secondsMonth + restOfSeconds;
