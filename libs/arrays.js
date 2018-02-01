@@ -122,6 +122,12 @@ function diagonalMatrix(arr){
 	return sumResult;
 }
 
+function each(arr, fn) {
+	for (elem of arr) {
+		fn(elem);
+	}
+}
+
 function map(arr, fn){
 	let arrResult = [];
 
