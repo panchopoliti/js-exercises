@@ -3,10 +3,12 @@
   function POSTForm(fileLocation, infoToSend, idBtn, cbSucces, cbWrong = null) {
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
-      if (request.readyState === 4 && request.status === 200) {
-        cbSucces();
-      } else {
-        cbWrong();
+      if (request.readyState === 4) {
+        if (request.status === 200) {
+          cbSucces();
+        } else {
+          cbWrong();
+        }
       }
     };
     request.open('POST', fileLocation);
@@ -25,12 +27,14 @@
       let receivedInfoJSON = {};
 
       request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 200) {
-          receivedInfoJSON = JSON.parse(request.responseText);
-          cbSucces();
-        } else {
-          cbWrong();
-        }
+        if (request.readyState === 4){
+          if (request.status === 200) {
+            receivedInfoJSON = JSON.parse(request.responseText);
+            cbSucces();
+          } else {
+            cbWrong();
+          }
+        } 
       };
 
       request.open('GET', fileLocation);
