@@ -12,7 +12,7 @@
 	}
 
   function mkMilitar(day, month, year) {
-    return `${DateUtils.asMilitar(year)}:${DateUtils.asMilitar(month)}:${DateUtils.asMilitar(day)}`;
+    return `${DateUtils.asMilitar(year)}-${DateUtils.asMilitar(month)}-${DateUtils.asMilitar(day)}`;
   }
 
 	function MyDate(day, month, year) {
