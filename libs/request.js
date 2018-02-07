@@ -30,11 +30,8 @@
         if (request.readyState === 4){
           if (request.status === 200) {
             receivedInfoJSON = JSON.parse(request.responseText);
-            cbSucces();
-          } else {
-            cbWrong();
           }
-        } 
+        }
       };
 
       request.open('GET', fileLocation);
