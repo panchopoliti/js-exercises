@@ -1,5 +1,5 @@
 (function(root) {
-	
+
 	const daysOfMonthsInTheYear = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
 	const secondsPerDay = 60 * 60 * 24;
 	const secondsPerYear = 365 * secondsPerDay;
@@ -8,7 +8,9 @@
 	function DateUtils() {
 		this.isLeapYear = function(year) {
 			return (((year % 100) !=0 ) &&((year % 4) == 0))||((year % 400) == 0);
-		};	
+		};
+
+		this.asMilitar = num => num < 10 ? `0${num}` : num;
 
 		this.getMonthDays = function(month, year) {
 			let result;
@@ -16,7 +18,7 @@
 				case 1:
 				case 3:
 				case 5:
-				case 7: 
+				case 7:
 				case 8:
 				case 10:
 				case 12:
@@ -30,7 +32,7 @@
 					break;
 				case 2:
 					result = (this.isLeapYear(year)) ? 29 : 28;
-					break;  
+					break;
 			}
 			return result;
 		};
@@ -47,7 +49,7 @@
 			const year = Math.floor(seconds / secondsPerYear) + 1970;
 			const secondsInYear = seconds - this.secondsUpToTheYear(year);
 			const extra24Hours = 1;
-			const dayInYear =  Math.floor(secondsInYear / secondsPerDay) + extra24Hours; 
+			const dayInYear =  Math.floor(secondsInYear / secondsPerDay) + extra24Hours;
 			const month = this.monthOfYearDay(dayInYear, year);
 			let day = this.dayInMonth(dayInYear, month, year);
 
@@ -69,7 +71,7 @@
 					break;
 				}
 			}
-		};	
+		};
 
 		this.dayInMonth = function(numDay, month, year) {
 			let result = 0;
@@ -89,6 +91,6 @@
 		exports = module.exports = new DateUtils();
 	} else {
 	  	root.DateUtils = new DateUtils();
-	}	
+	}
 
 })(this);

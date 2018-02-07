@@ -7,7 +7,7 @@
 	const secondsPerWeek = secondsPerDay * 7;
 
 	function isNum(v) {
-		return typeof v === 'number';	
+		return typeof v === 'number';
 	}
 
 	function isNotANumber(obj) {
@@ -37,8 +37,6 @@
 		return `${asMilitar(hour)}:${asMilitar(min)}:${asMilitar(sec)}`;
 	}
 
-	const asMilitar = num => num < 10 ? `0${num}` : num;
-
 	function ownMathFloor(num) {
 		let result;
 
@@ -54,11 +52,11 @@
 
 	// Before including this library you must include date.js
 	function MyDateTime(day, month, year, hour = 0, min = 0, sec = 0) {
-		
+
 		this.hour = hour;
 		this.min = min;
 		this.sec = sec;
-		this.date = new MyDate(day, month, year); 
+		this.date = new MyDate(day, month, year);
 
 		this.toString = function() {
 			if (!this.isValid()) {
@@ -125,11 +123,11 @@
 			if (this.sec < 0 && this.sec > 59 || isNaN(this.sec)) {
 				return false;
 			}
-			
+
 			return true;
 
 		};
-		
+
 		this.getEpoch = function() {
 			let secondsYears = DateUtils.secondsUpToTheYear(this.getYear());
 			let secondsMonth = secondsOfMonthsInTheSameYear(this.getMonth(), this.getYear());
@@ -169,7 +167,7 @@
 	    	}
 	  	};
 	};
-	
+
 	if( typeof module !== 'undefined' && module.exports ) {
 		exports = module.exports = MyDateTime;
 	} else {

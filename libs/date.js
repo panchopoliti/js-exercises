@@ -1,7 +1,7 @@
 (function(root) {
-	
+
 	function isNum(v) {
-		return typeof v === 'number';	
+		return typeof v === 'number';
 	}
 
 	function isNotANumber(obj) {
@@ -11,7 +11,11 @@
 		return false;
 	}
 
-	function MyDate(day, month, year) { 
+  function mkMilitar(day, month, year) {
+    return `${DateUtils.asMilitar(year)}:${DateUtils.asMilitar(month)}:${DateUtils.asMilitar(day)}`;
+  }
+
+	function MyDate(day, month, year) {
 
 		if(day === null || month === undefined || year === undefined){
 	    	console.log('Fecha Invalida');
@@ -30,14 +34,16 @@
 				: `${this.day}/${this.month}/${this.year}`
 		};
 
+		this.dateTypeString = () => `${mkMilitar(this.year, this.month, this.day)}`;
+
 		this.isBefore = function(obj) {
 			if(this.year > obj.year) {
 				return false;
-			} 
+			}
 			else if(this.year === obj.year){
 				if(this.month > obj.month){
 					return false;
-				} 
+				}
 				else if(this.month === obj.month){
 					if(this.day >= obj.day){
 						return false;
@@ -100,7 +106,7 @@
 
 			return true;
 		};
-		
+
 	};
 
 	if ( typeof module !== 'undefined' && module.exports ) {
