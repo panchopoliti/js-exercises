@@ -1,6 +1,6 @@
 (function (root) {
 
-  function POSTForm(fileLocation, infoToSend, idBtn, cbSucces, cbWrong = null) {
+  function postForm(fileLocation, infoToSend, idBtn, cbSucces, cbWrong = null) {
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
       if (request.readyState === 4) {
@@ -22,25 +22,25 @@
     idBtn.addEventListener('click', sendDataForm);
   }
 
-  function GET(fileLocation, cbSucces, cbWrong) {
-      const request = new XMLHttpRequest();
-      let receivedInfoJSON = {};
-
-      request.onreadystatechange = function () {
-        if (request.readyState === 4){
-          if (request.status === 200) {
-            receivedInfoJSON = JSON.parse(request.responseText);
-          }
+  function get(fileLocation, successCb, errorCb) {
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+      if (request.readyState === 4){
+        if (request.status === 200) {
+          const receivedInfoJSON = JSON.parse(request.responseText);
+          successCb(receivedInfoJSON);
+        } else {
+          errorCb && errorCb();
         }
-      };
+      }
+    };
 
-      request.open('GET', fileLocation);
-      request.send();
-      return receivedInfoJSON;
+    request.open('GET', fileLocation);
+    request.send();
   }
 
-  root.ServerFunctions = {
-    POSTForm,
-    GET,
+  root.serverFunctions = {
+    postForm,
+    get,
   };
 }(this));
