@@ -1,6 +1,6 @@
 (function (root) {
 
-  function post(fileLocation, JSONData, successCb, errorCb, event) {
+  function post(fileLocation, createJSONDataCb, successCb, errorCb, event) {
     event.preventDefault();
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
@@ -12,7 +12,7 @@
         }
       }
     };
-    const formattedJsonData = JSON.stringify(JSONData);
+    const formattedJsonData = JSON.stringify(createJSONDataCb());
     request.open('POST', fileLocation);
     request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     request.send(formattedJsonData);
