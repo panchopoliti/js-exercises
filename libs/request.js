@@ -12,9 +12,9 @@
         }
       }
     };
+    const formattedJsonData = JSON.stringify(JSONData);
     request.open('POST', fileLocation);
     request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    const formattedJsonData = JSON.stringify(JSONData);
     request.send(formattedJsonData);
     }
 
