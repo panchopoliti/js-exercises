@@ -1,26 +1,22 @@
 (function (root) {
 
-  function postForm(fileLocation, infoToSend, idBtn, cbSucces, cbWrong = null) {
+  function post(fileLocation, JSONData, successCb, errorCb, event) {
+    event.preventDefault();
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
       if (request.readyState === 4) {
         if (request.status === 200) {
-          cbSucces();
+          successCb();
         } else {
-          cbWrong();
+          errorCb();
         }
       }
     };
     request.open('POST', fileLocation);
     request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-
-    function sendDataForm(ev) {
-      ev.preventDefault();
-      const formattedJsonData = JSON.stringify(infoToSend);
-      request.send(formattedJsonData);
+    const formattedJsonData = JSON.stringify(JSONData);
+    request.send(formattedJsonData);
     }
-    idBtn.addEventListener('click', sendDataForm);
-  }
 
   function get(fileLocation, successCb, errorCb) {
     const request = new XMLHttpRequest();
@@ -40,7 +36,7 @@
   }
 
   root.serverFunctions = {
-    postForm,
+    post,
     get,
   };
 }(this));
